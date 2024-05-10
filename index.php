@@ -1,6 +1,6 @@
 <?php
 session_start();
-/* Eric Boyd
+/* Eric Boyd    - Team BOGO
  * 5May2024
  * SDev 328
  */
@@ -28,6 +28,24 @@ $f3->route('GET /', function() {
     //Render view page.
     $view = new Template();
     echo $view->render("views/home-page.html");
+});
+
+// Login Form Route
+$f3->route('GET /loginForm', function() {
+    //echo '<h1>My Login Form</h1>';
+
+    // Render a view page
+    $view = new Template();
+    echo $view->render('views/loginForm.html');
+});
+
+// Sign Up Form
+$f3->route('GET /sign-up', function() {
+    //echo '<h1>My signup</h1>';
+
+    // Render a view page
+    $view = new Template();
+    echo $view->render('views/sign-up.html');
 });
 
 // Run fat free
