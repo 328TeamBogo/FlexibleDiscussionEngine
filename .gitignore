@@ -1,5 +1,3 @@
-composer.json
 composer.lock
 vendor/
 tmp/
-error_logs
