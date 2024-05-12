@@ -1,7 +1,7 @@
 <?php
 session_start();
-/* Eric Boyd    - Team BOGO
- * 5May2024
+/* Team BOGO
+ * 11May2024
  * SDev 328
  */
 // 328/FlexibleDiscussionEngine/index.php
