@@ -23,3 +23,7 @@ a:hover {
 .margin-bottom {
     margin-bottom: 1rem;
 }
+.bg-vim
+{
+    background-image: url("../images/VimBG.png");
+}
