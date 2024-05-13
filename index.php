@@ -31,7 +31,7 @@ $f3->route('GET /', function() {
 });
 
 // Login Form Route
-$f3->route('GET /loginForm', function() {
+$f3->route('GET|POST /loginForm', function() {
     //echo '<h1>My Login Form</h1>';
 
     // Render a view page
@@ -40,7 +40,7 @@ $f3->route('GET /loginForm', function() {
 });
 
 // Sign Up Form
-$f3->route('GET /sign-up', function() {
+$f3->route('GET|POST /sign-up', function() {
     //echo '<h1>My signup</h1>';
 
     // Render a view page
