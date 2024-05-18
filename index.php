@@ -30,6 +30,26 @@ $f3->route('GET /', function() {
     echo $view->render("views/home-page.html");
 });
 
+// Dynamic addressing for chosen topic's discussion list.
+$f3->route('GET /@topic', function () {
+    //to access topic $f3->get('PARAMS.topic');
+    //use to pull discussion list.
+
+   $view = new Template();
+   echo $view->render("views/topic-list.html");
+});
+
+//  Dynamic addressing for chosen discussion.
+$f3->route('GET /@topic/@discussion', function () {
+    //to access topic $f3->get('PARAMS.topic');
+    //to access discussion $f3->get('PARAMS.discussion');
+    //use to access list of posts.
+
+    $view = new Template();
+    echo $view->render("views/discussion.html");
+});
+
+
 // Login Form Route
 $f3->route('GET /loginForm', function() {
     //echo '<h1>My Login Form</h1>';
