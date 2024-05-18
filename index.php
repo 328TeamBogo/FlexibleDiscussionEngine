@@ -12,6 +12,7 @@ error_reporting(E_ALL);
 
 // Require the autoloader
 require_once("vendor/autoload.php");
+require_once ("classes/post.php");
 //require_once("model/data-layer.php");
 //require_once("model/validate.php");
 
@@ -31,19 +32,40 @@ $f3->route('GET /', function() {
 });
 
 // Dynamic addressing for chosen topic's discussion list.
-$f3->route('GET /@topic', function () {
+$f3->route('GET /@topic', function ($f3) {
     //to access topic $f3->get('PARAMS.topic');
     //use to pull discussion list.
 
+    //Check topic exists
+    //Might need to make topics a global array.
+
+    //Implement SQL pull of discussions
+    $testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort', 'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];
+
+    $f3->set('discussions', $testDiscussions);
+
    $view = new Template();
-   echo $view->render("views/topic-list.html");
+   echo $view->render("views/discussion-list.html");
 });
 
 //  Dynamic addressing for chosen discussion.
-$f3->route('GET /@topic/@discussion', function () {
+$f3->route('GET /@topic/@discussion', function ($f3) {
     //to access topic $f3->get('PARAMS.topic');
     //to access discussion $f3->get('PARAMS.discussion');
     //use to access list of posts.
+
+    //Check discussion exists
+
+    //Retrieve posts with SQL
+    $testPosts[] = array();
+    for($i=0; $i<100; $i++)
+    {
+        $testPosts[$i] = (new Post("John$i", "12/12/1989", "I was here!"));
+    }
+
+
+    //Assign posts to F3
+    $f3->set("posts", $testPosts);
 
     $view = new Template();
     echo $view->render("views/discussion.html");
