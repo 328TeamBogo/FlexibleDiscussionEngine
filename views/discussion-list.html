@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include href="views/header.html"></include>
+</head>
+<body>
+    <div class="container">
+        <include href="views/title.html"></include>
+        <include href="views/nav.html"></include>
+        <include href="views/search.html"></include>
+        <h1>{{ @PARAMS.topic }}</h1>
+        <hr class="border-3">
+        <ul>
+            <repeat group="@discussions" value="@discussion">
+                <h4>{{@discussion}}</h4>
+                <hr>
+            </repeat>
+        </ul>
+    </div>
+</body>
+</html>
