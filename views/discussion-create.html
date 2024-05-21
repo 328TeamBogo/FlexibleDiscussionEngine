@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <include href="views/header.html"></include>
+</head>
+<body>
+<div class="container">
+    <include href="views/title.html"></include>
+    <include href="views/nav.html"></include>
+    <include href="views/search.html"></include>
+    <h1>New Discussion</h1>
+
+    <form action="#" method="post" class="form-horizontal">
+        <!-- get title -->
+        <div class="form-group">
+            <label for="title" class="col-sm-4 control-label">Discussion Title</label>
+            <div class="col-sm-4"><input class="form-control" type="text"
+                                         name="title" id="title" ></div>
+        </div>
+        <br>
+        <!-- get body -->
+        <div class="form-group">
+            <label for="body" class="col-sm-4 control-label">Content: </label>
+            <div class="col-sm-4"><textarea class="form-control"
+                                            name="body" id="body"></textarea></div>
+        </div>
+        <br>
+    </form>
+</div>
