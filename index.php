@@ -90,5 +90,13 @@ $f3->route('GET|POST /sign-up', function() {
     echo $view->render('views/sign-up.html');
 });
 
+// Discussion Creation Form
+$f3->route('GET /discussion-create', function() {
+    // Render a view page
+    $view = new Template();
+    echo $view->render('views/discussion-create.html');
+});
+
+
 // Run fat free
 $f3->run();
