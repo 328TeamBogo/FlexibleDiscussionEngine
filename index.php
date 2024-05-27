@@ -71,23 +71,36 @@ $f3->route('GET /@topic/@discussion', function ($f3) {
     echo $view->render("views/discussion.html");
 });
 
-
 // Login Form Route
-$f3->route('GET|POST /loginForm', function() {
-    //echo '<h1>My Login Form</h1>';
+$f3->route('GET|POST /loginForm', function($f3) {
 
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/loginForm.html');
+    if ($f3->get('VERB') == 'POST') {
+        $username = $f3->get('POST.username');
+        $password = $f3->get('POST.password');
+
+        // Add authentication logic here
+        $_SESSION['username'] = $username;
+        $f3->reroute('/');
+    } else {
+        $view = new Template();
+        echo $view->render('views/loginForm.html');
+    }
 });
 
-// Sign Up Form
-$f3->route('GET|POST /sign-up', function() {
-    //echo '<h1>My signup</h1>';
+// Sign Up Form Route
+$f3->route('GET|POST /sign-up', function($f3) {
 
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/sign-up.html');
+    if ($f3->get('VERB') == 'POST') {
+        $username = $f3->get('POST.username');
+        $password = $f3->get('POST.password');
+
+        // Add user registration logic here
+        $_SESSION['username'] = $username;
+        $f3->reroute('/');
+    } else {
+        $view = new Template();
+        echo $view->render('views/sign-up.html');
+    }
 });
 
 // Discussion Creation Form
