@@ -78,9 +78,13 @@ $f3->route('GET|POST /loginForm', function($f3) {
         $username = $f3->get('POST.username');
         $password = $f3->get('POST.password');
 
-        // Add authentication logic here
-        $_SESSION['username'] = $username;
-        $f3->reroute('/');
+        // Store in SESSION
+        if ($username && $password) {
+            $_SESSION['username'] = $username;
+            $f3->reroute('/');
+        } else {
+            $f3->set('error', 'Invalid login');
+        }
     } else {
         $view = new Template();
         echo $view->render('views/loginForm.html');
@@ -94,22 +98,18 @@ $f3->route('GET|POST /sign-up', function($f3) {
         $username = $f3->get('POST.username');
         $password = $f3->get('POST.password');
 
-        // Add user registration logic here
-        $_SESSION['username'] = $username;
-        $f3->reroute('/');
+        // Store in SESSION
+        if ($username && $password) {
+            $_SESSION['username'] = $username;
+            $f3->reroute('/');
+        } else {
+            $f3->set('error', 'Sign-up failed');
+        }
     } else {
         $view = new Template();
         echo $view->render('views/sign-up.html');
     }
 });
-
-// Discussion Creation Form
-$f3->route('GET /discussion-create', function() {
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/discussion-create.html');
-});
-
 
 // Run fat free
 $f3->run();
