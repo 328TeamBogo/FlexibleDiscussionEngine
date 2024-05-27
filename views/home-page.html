@@ -10,6 +10,11 @@
     <include href="views/nav.html"></include>
     <include href="views/search.html"></include>
     <div class="row justify-content-center mt-5">
+        <?php if (isset($_SESSION['username'])): ?>
+        <div class="alert alert-info">
+            Welcome, <?= $_SESSION['username'] ?>!
+        </div>
+        <?php endif; ?>
 <<<<<<< HEAD
         <h1>Topic</h1>
         <hr>
