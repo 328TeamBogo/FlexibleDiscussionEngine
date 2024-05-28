@@ -17,9 +17,12 @@ require_once ("classes/post.php");
 //require_once("model/validate.php");
 
 $TOPICS = array(
-    array("General", "General Discussion", "Memes", "Q&A"),
-    array("Computer Science", "Algorithms", "Data Structures", "Q&A"),
-    array("Mathematics", "Numbers and Stuff")
+    "General",
+    array( "General Discussion", "Memes", "Q&A"),
+    "Computer Science",
+    array( "Algorithms", "Data Structures", "Q&A"),
+    "Mathematics",
+    array("Numbers and Stuff")
 );
 
 // Instantiate the f3 base class
