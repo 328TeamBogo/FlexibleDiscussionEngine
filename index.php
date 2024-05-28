@@ -25,8 +25,11 @@ $TOPICS = array(
     array("Numbers and Stuff")
 );
 
+
 // Instantiate the f3 base class
 $f3 = Base::instance();
+
+$f3->set('TOPICS', $TOPICS);
 
 //used to avoid file caching while still developing styles and/or JS
 $f3->set('date', date('Y.m.d.H.i.s'));

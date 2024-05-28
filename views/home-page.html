@@ -19,7 +19,24 @@
         <br>
         <div class="row justify-content-center">
             <div class="margin-bottom">
-                <h2>Sorting Algorithms</h2>
+                <repeat group="{{ @TOPICS }}" value="{{ @topic }}">
+                    <check if="{{ is_string(@topic) }}">
+                        <true>
+                            <h2>{{ @topic }}</h2>
+                            <hr class="border-3">
+                        </true>
+                        <false>
+                            <repeat group="{{ @topic }}" value="{{ @theTopic }}">
+                                <a href="{{ @theTopic }}">
+                                    <h4>{{ @theTopic }}</h4>
+                                </a>
+                                <hr>
+                            </repeat>
+                        </false>
+                    </check>
+                </repeat>
+
+                <!--<h2>Sorting Algorithms</h2>
                 <hr class="border-3">
                 <a href="">
                     <h4>Bogosort</h4>
@@ -30,9 +47,9 @@
                     <h4>Quicksort</h4>
                 </a>
                 <p class="description">Discussion about a lesser-known algorithm</p>
-                <hr>
+                <hr>-->
             </div>
-            <div class="margin-bottom">
+            <!--<div class="margin-bottom">
                 <h2>Data Structures</h2>
                 <hr class="border-3">
                 <a href="">
@@ -40,7 +57,7 @@
                 </a>
                 <p class="description">When is the right time to use each?</p>
                 <hr>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
