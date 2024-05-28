@@ -11,15 +11,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{$SERVER['HTTPS'] . '/328/FlexibleDiscussionEngine'}}">Home</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" role="button"
-                       data-bs-toggle="dropdown" id="topicDropdown" href="#"
-                       aria-expanded="false">Topic</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Discussion Topic</a></li>
-                        <li><a class="dropdown-item" href="#">Discussion Topic</a></li>
-                    </ul>
-                </li>
+
+                <repeat group="{{ @TOPICS }}" value="{{ @topic }}">
+                    <check if="{{ is_string(@topic) }}">
+                        <true>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button"
+                                   data-bs-toggle="dropdown" id="topicDropdown" href="#"
+                                   aria-expanded="false">{{ @topic }}</a>
+                        </true>
+                        <false>
+                            <ul class="dropdown-menu">
+                            <repeat group="{{ @topic }}" value="{{ @theTopic }}">
+                                    <li><a class="dropdown-item" href="{{ @theTopic }}">{{ @theTopic }}</a></li>
+                            </repeat>
+                            </ul>
+                            </li>
+                        </false>
+                    </check>
+                </repeat>
+
             </ul>
         </div>
     </div>
