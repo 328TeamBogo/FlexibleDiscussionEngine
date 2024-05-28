@@ -57,6 +57,26 @@ $f3->route('GET /@topic/@discussion', function ($f3) {
     //Check discussion exists
 
     //Retrieve posts with SQL
+    /*$sql = "SELECT users.username, posts.message, posts.created_at FROM posts
+    INNER JOIN discussions ON posts.discussion_id = discussions.id
+    INNER JOIN users ON posts.user_id = users.id
+    WHERE discussions.id = :discussionID
+    ORDER BY posts.created_at";*/
+    //$statement = $dbh->prepare($sql);
+    //$discussionID = $f3->get('PARAMS.discussion');
+    //$statement->bindParam(':discussionID', $discussionID, PDO::PARAM_INT);
+    //$statement->execute();
+    /*
+    $posts[] = array();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $index = 0;
+    foreach ($result as $row)
+    {
+        $posts[$index] = new Post($row['users.username'], $row['posts.created_at', $row['posts.message']);
+    }
+     */
+
+    //Test data
     $testPosts[] = array();
     for($i=0; $i<100; $i++)
     {
