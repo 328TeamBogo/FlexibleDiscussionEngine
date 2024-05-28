@@ -12,7 +12,7 @@
         <hr class="border-3">
         <ul>
             <repeat group="@discussions" value="@discussion">
-                <h4>{{@discussion}}</h4>
+                <h4><a href="{{@PARAMS.topic}}/{{@discussion}}">{{@discussion}}</a></h4>
                 <hr>
             </repeat>
         </ul>
