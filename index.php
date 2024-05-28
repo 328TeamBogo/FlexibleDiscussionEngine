@@ -16,6 +16,12 @@ require_once ("classes/post.php");
 //require_once("model/data-layer.php");
 //require_once("model/validate.php");
 
+$TOPICS = array(
+    array("General", "General Discussion", "Memes", "Q&A"),
+    array("Computer Science", "Algorithms", "Data Structures", "Q&A"),
+    array("Mathematics", "Numbers and Stuff")
+);
+
 // Instantiate the f3 base class
 $f3 = Base::instance();
 
@@ -142,20 +148,6 @@ $f3->route('GET|POST /sign-up', function($f3)
         }
     }
 );
-
-// Define a discussion-create route
-$f3->route('GET /discussion-create', function() {
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/discussion-create.html');
-});
-
-// Define a post-create route
-$f3->route('GET /post-create', function() {
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/post-create.html');
-});
 
 // Run fat free
 $f3->run();
