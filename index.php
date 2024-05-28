@@ -23,7 +23,8 @@ $f3 = Base::instance();
 $f3->set('date', date('Y.m.d.H.i.s'));
 
 // Define a default route
-$f3->route('GET /', function() {
+$f3->route('GET /', function()
+{
     //echo '<h1>Hello world!</h1>';
 
     //Render view page.
@@ -32,7 +33,8 @@ $f3->route('GET /', function() {
 });
 
 // Dynamic addressing for chosen topic's discussion list.
-$f3->route('GET /@topic', function ($f3) {
+$f3->route('GET /@topic', function ($f3)
+{
     //to access topic $f3->get('PARAMS.topic');
     //use to pull discussion list.
 
@@ -40,7 +42,8 @@ $f3->route('GET /@topic', function ($f3) {
     //Might need to make topics a global array.
 
     //Implement SQL pull of discussions
-    $testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort', 'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];
+    $testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort', 'Bubble Sort',
+        'Quicksort', 'Heapsort', 'Timsort'];
 
     $f3->set('discussions', $testDiscussions);
 
@@ -49,7 +52,8 @@ $f3->route('GET /@topic', function ($f3) {
 });
 
 //  Dynamic addressing for chosen discussion.
-$f3->route('GET /@topic/@discussion', function ($f3) {
+$f3->route('GET /@topic/@discussion', function ($f3)
+{
     //to access topic $f3->get('PARAMS.topic');
     //to access discussion $f3->get('PARAMS.discussion');
     //use to access list of posts.
@@ -70,17 +74,19 @@ $f3->route('GET /@topic/@discussion', function ($f3) {
     $posts[] = array();
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     $index = 0;
-    foreach ($result as $row)
-    {
-        $posts[$index] = new Post($row['users.username'], $row['posts.created_at', $row['posts.message']);
+    foreach ($result as $row) {
+        $posts[$index] = new Post($row['users.username'],
+         $row['posts.created_at', $row['posts.message']
+         );
     }
      */
 
     //Test data
     $testPosts[] = array();
-    for($i=0; $i<100; $i++)
-    {
-        $testPosts[$i] = (new Post("John$i", "12/12/1989", "I was here!"));
+    for($i=0; $i<100; $i++) {
+        $testPosts[$i] = (new Post("John$i", "12/12/1989",
+            "I was here!")
+        );
     }
 
 
@@ -92,7 +98,8 @@ $f3->route('GET /@topic/@discussion', function ($f3) {
 });
 
 // Login Form Route
-$f3->route('GET|POST /loginForm', function($f3) {
+$f3->route('GET|POST /loginForm', function($f3)
+{
 
     if ($f3->get('VERB') == 'POST') {
         $username = $f3->get('POST.username');
@@ -112,8 +119,8 @@ $f3->route('GET|POST /loginForm', function($f3) {
 });
 
 // Sign Up Form Route
-$f3->route('GET|POST /sign-up', function($f3) {
-
+$f3->route('GET|POST /sign-up', function($f3)
+{
     if ($f3->get('VERB') == 'POST') {
         $username = $f3->get('POST.username');
         $password = $f3->get('POST.password');
