@@ -97,7 +97,7 @@ $f3->route('GET /@topic/@discussion', function ($f3)
 
         //Test data
         $testPosts[] = array();
-        for($i=0; $i<100; $i++) {
+        for($i=0; $i<20; $i++) {
             $testPosts[$i] = (new Post("John$i"
                 , "12/12/1989", "I was here!")
             );

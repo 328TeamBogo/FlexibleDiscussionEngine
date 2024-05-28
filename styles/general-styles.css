@@ -2,6 +2,10 @@ hr {
     color: #c40000;
 }
 
+textarea {
+    resize: none;
+}
+
 p.description {
     font-weight: bold;
     opacity: 0.8;
