@@ -12,9 +12,15 @@
     <hr class="border-3">
     <ul>
         <repeat group="@posts" value="@post">
-            <div>
-                <p>{{ @post->getUser() }} {{ @post->getDate() }}</p>
-                <p>{{ @post->getMessage() }}</p>
+            <div class="mb-3 container row shadow rounded">
+                <div class="col-12 d-flex mb-3 border-bottom border-2">
+                    <div class="p-2">{{ @post->getUser() }}</div>
+                    <div class="p-2">{{ @post->getDate() }}</div>
+                    <div class="ms-auto p-2"><button class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Quote</button></div>
+                </div>
+                <div class="mb-2 col-12">
+                    <div>{{ @post->getMessage() }}</div>
+                </div>
             </div>
         </repeat>
     </ul>
