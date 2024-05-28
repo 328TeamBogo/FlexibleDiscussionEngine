@@ -2,7 +2,7 @@ hr {
     color: #c40000;
 }
 
-p {
+p.description {
     font-weight: bold;
     opacity: 0.8;
 }
