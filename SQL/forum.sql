@@ -15,6 +15,7 @@ CREATE TABLE discussions (
 
     id         INT AUTO_INCREMENT PRIMARY KEY,
     topic      VARCHAR(255) NOT NULL,
+    title      VARCHAR(255) NOT NULL,
     user_id    INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id)

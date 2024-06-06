@@ -54,6 +54,21 @@ $f3->route('GET /@topic', function ($f3)
         //Check topic exists
         //Might need to make topics a global array.
 
+        //Retrieve discussions with SQL
+        /*$sql = "SELECT title FROM discussions WHERE topic = :topic";
+        $statement = $dbh->prepare($sql);
+        $topic = $f3->get('PARAMS.topic');
+        $statement->bindParam(':topic', $topic);
+        $statement->execute();
+
+        $discussions[] = array();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $index = 0;
+        foreach ($result as $row) {
+            $discussions[$index] = $row['topic'];
+            $index++;
+        }*/
+
         //Implement SQL pull of discussions
         $testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort',
             'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];
@@ -75,16 +90,18 @@ $f3->route('GET /@topic/@discussion', function ($f3)
         //Check discussion exists
 
         //Retrieve posts with SQL
-        /*$sql = "SELECT users.username, posts.message, posts.created_at FROM posts
+        /*
+        $sql = "SELECT users.username, posts.message, posts.created_at
+        FROM posts
         INNER JOIN discussions ON posts.discussion_id = discussions.id
         INNER JOIN users ON posts.user_id = users.id
         WHERE discussions.id = :discussionID
-        ORDER BY posts.created_at";*/
-        //$statement = $dbh->prepare($sql);
-        //$discussionID = $f3->get('PARAMS.discussion');
-        //$statement->bindParam(':discussionID', $discussionID, PDO::PARAM_INT);
-        //$statement->execute();
-        /*
+        ORDER BY posts.created_at";
+        $statement = $dbh->prepare($sql);
+        $discussionID = $f3->get('PARAMS.discussion');
+        $statement->bindParam(':discussionID', $discussionID, PDO::PARAM_INT);
+        $statement->execute();
+
         $posts[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $index = 0;
@@ -92,12 +109,13 @@ $f3->route('GET /@topic/@discussion', function ($f3)
             $posts[$index] = new Post($row['users.username'],
              $row['posts.created_at', $row['posts.message']
              );
+            $index++;
         }
          */
 
         //Test data
         $testPosts[] = array();
-        for($i=0; $i<20; $i++) {
+        for($i=0; $i<25; $i++) {
             $testPosts[$i] = (new Post("John$i"
                 , "12/12/1989", "I was here!")
             );
@@ -154,14 +172,6 @@ $f3->route('GET|POST /sign-up', function($f3)
         }
     }
 );
-
-// Define a discussion-create route
-$f3->route('GET /discussion-create', function() {
-    // Render a view page
-    $view = new Template();
-    echo $view->render('views/discussion-create.html');
-});
-
 
 // Run fat free
 $f3->run();
