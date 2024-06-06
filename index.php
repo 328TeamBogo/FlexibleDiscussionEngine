@@ -138,6 +138,20 @@ $f3->route('GET|POST /loginForm', function($f3)
             $username = $f3->get('POST.username');
             $password = $f3->get('POST.password');
 
+//            $sql = 'SELECT password FROM users WHERE username = :username';
+//            $statement = $GLOBALS['dbh']->prepare($sql);
+//            $statement->bindParam(':username', $username);
+//            $statement->execute();
+//            $hash = $statement->fetchAll(PDO::FETCH_ASSOC); //might be wrong fetch
+//
+//            // Store in SESSION
+//            if (password_verify($password, $hash['password'])) {
+//                $_SESSION['username'] = $username;
+//                $f3->reroute('/');
+//            } else {
+//                $f3->set('error', 'Invalid login');
+//            }
+
             // Store in SESSION
             if ($username && $password) {
                 $_SESSION['username'] = $username;
