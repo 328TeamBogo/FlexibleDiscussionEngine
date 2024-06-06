@@ -81,7 +81,7 @@ $f3->route('GET /@topic', function ($f3)
 );
 
 //  Dynamic addressing for chosen discussion.
-$f3->route('GET /@topic/@discussion', function ($f3)
+$f3->route('GET|POST /@topic/@discussion', function ($f3)
     {
         //to access topic $f3->get('PARAMS.topic');
         //to access discussion $f3->get('PARAMS.discussion');
