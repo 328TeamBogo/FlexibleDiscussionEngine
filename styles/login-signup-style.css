@@ -1,10 +1,10 @@
-body {
+.body {
     font-family: Arial, sans-serif;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
     margin: 0;
 }
 
