@@ -188,7 +188,45 @@ $f3->route('GET|POST /sign-up', function($f3)
 );
 
 // Define a discussion-create route
-$f3->route('GET /discussion-create', function() {
+$f3->route('GET|POST /discussion-create', function() {
+    //echo '<h1>Testing!</h1>';
+
+    // Initialize variables
+    $title = "";
+
+    // If the form has been posted
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+        $title = $_POST['title'];
+
+        require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
+
+        try {
+            // Instantiate our PDO Database Object
+            $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            echo 'Connected to database!';
+        }
+        catch (PDOException $e) {
+            die( $e->getMessage() );
+        }
+
+        //1. Define the query
+        $sql = 'INSERT INTO discussions (topic) VALUES (:topic)';
+
+        //2. Prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        //3. Bind the parameters
+        $statement->bindParam(':topic', $title);
+
+        //4. Execute the query
+        $statement-> execute();
+
+        //5. Process the result (if there is one)
+        $id = $dbh->lastInsertId();
+        echo "<p>Topic $id was inserted successfully</p>";
+    }
+
     // Render a view page
     $view = new Template();
     echo $view->render('views/discussion-create.html');
