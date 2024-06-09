@@ -8,7 +8,11 @@
     <include href="views/title.html"></include>
     <include href="views/nav.html"></include>
     <include href="views/search.html"></include>
-    <h1>{{ @PARAMS.topic }}</h1>
+    <br>
+    <div class="col-12 d-flex">
+        <h1>{{ @PARAMS.topic }}</h1>
+        <div class="ms-auto p-2"><button onclick="window.location.href='#post-create'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Reply</button></div>
+    </div>
     <hr class="border-3">
     <ul>
         <repeat group="@posts" value="@post">
