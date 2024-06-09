@@ -22,7 +22,6 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
 try {
     // Instantiate our PDO Database Object
     $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    echo 'Connected to database!';
 }
 catch (PDOException $e) {
     die( $e->getMessage() );
@@ -122,7 +121,6 @@ $f3->route('GET|POST /@topic/@discussion', function ($f3)
 
         $posts[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        echo $GLOBALS['dbh']->errorCode();
         $index = 0;
         foreach ($result as $row) {
             $posts[$index] = new Post($row['username'],
