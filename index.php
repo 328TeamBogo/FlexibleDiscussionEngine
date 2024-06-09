@@ -231,7 +231,6 @@ $f3->route('GET|POST /@topic/discussion-create', function($f3) {
 
         //5. Process the result (if there is one)
         $id = $GLOBALS['dbh']->lastInsertId();
-        echo "<p>Topic $id was inserted successfully</p>";
 
         createPost($id, $message, 1);
     }
