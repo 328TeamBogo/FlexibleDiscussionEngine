@@ -95,6 +95,33 @@ $f3->route('GET /@topic', function ($f3)
 //  Dynamic addressing for chosen discussion.
 $f3->route('GET|POST /@topic/@discussion', function ($f3)
     {
+        // Initialize variables
+        $message = "";
+
+        // If the form has been posted
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+            $message = $_POST['message'];
+
+            //1. Define the query
+            $sql = 'INSERT INTO posts (discussion_id, message) VALUES (:discussion_id, :message)';
+
+            //2. Prepare the statement
+            $statement = $GLOBALS['dbh']->prepare($sql);
+
+            //3. Bind the parameters
+            $statement->bindParam(':message', $message);
+            $statement->bindParam(':discussion_id', $f3->get('PARAMS.discussion'));
+
+            //4. Execute the query
+            $statement-> execute();
+
+            //5. Process the result (if there is one)
+            $id = $GLOBALS['dbh']->lastInsertId();
+            echo "<p>Topic $id was inserted successfully</p>";
+        }
+
+
         //to access topic $f3->get('PARAMS.topic');
         //to access discussion $f3->get('PARAMS.discussion');
         //use to access list of posts.
