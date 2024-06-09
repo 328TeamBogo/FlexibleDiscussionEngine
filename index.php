@@ -200,7 +200,7 @@ $f3->route('GET|POST /sign-up', function($f3)
 );
 
 // Define a discussion-create route
-$f3->route('GET|POST /discussion-create', function() {
+$f3->route('GET|POST /@topic/discussion-create', function($f3) {
     //echo '<h1>Testing!</h1>';
 
     // Initialize variables
@@ -212,13 +212,14 @@ $f3->route('GET|POST /discussion-create', function() {
         $title = $_POST['title'];
 
         //1. Define the query
-        $sql = 'INSERT INTO discussions (topic) VALUES (:topic)';
+        $sql = 'INSERT INTO discussions (topic, title) VALUES (:topic, :title)';
 
         //2. Prepare the statement
         $statement = $GLOBALS['dbh']->prepare($sql);
 
         //3. Bind the parameters
-        $statement->bindParam(':topic', $title);
+        $statement->bindParam(':title', $title);
+        $statement->bindParam(':topic', $f3->get('PARAMS.topic'));
 
         //4. Execute the query
         $statement-> execute();
