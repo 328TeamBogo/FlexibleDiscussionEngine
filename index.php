@@ -261,5 +261,4 @@ function createPost ($discussion_id, $message, $user_id) {
 
     //5. Process the result (if there is one)
     $id = $GLOBALS['dbh']->lastInsertId();
-    echo "<p>Topic $id was inserted successfully</p>";
 }
