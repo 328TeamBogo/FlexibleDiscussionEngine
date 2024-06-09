@@ -67,7 +67,7 @@ $f3->route('GET /@topic', function ($f3)
         //Might need to make topics a global array.
 
         //Retrieve discussions with SQL
-        $sql = "SELECT title FROM discussions WHERE topic = :topic";
+        $sql = "SELECT * FROM discussions WHERE topic = :topic";
         $statement = $GLOBALS['dbh']->prepare($sql);
         $topic = $f3->get('PARAMS.topic');
         $statement->bindParam(':topic', $topic);
@@ -77,7 +77,7 @@ $f3->route('GET /@topic', function ($f3)
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $index = 0;
         foreach ($result as $row) {
-            $discussions[$index] = $row['topic'];
+            $discussions[$index] = $row['title'];
             $index++;
         }
 
