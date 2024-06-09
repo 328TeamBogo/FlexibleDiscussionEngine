@@ -98,22 +98,7 @@ $f3->route('GET|POST /@topic/@discussion', function ($f3)
 
             $message = $_POST['message'];
 
-            //1. Define the query
-            $sql = 'INSERT INTO posts (discussion_id, message) VALUES (:discussion_id, :message)';
-
-            //2. Prepare the statement
-            $statement = $GLOBALS['dbh']->prepare($sql);
-
-            //3. Bind the parameters
-            $statement->bindParam(':message', $message);
-            $statement->bindParam(':discussion_id', $f3->get('PARAMS.discussion'));
-
-            //4. Execute the query
-            $statement-> execute();
-
-            //5. Process the result (if there is one)
-            $id = $GLOBALS['dbh']->lastInsertId();
-            echo "<p>Topic $id was inserted successfully</p>";
+            createPost($f3->get('PARAMS.discussion'), $message, 1);
         }
 
 
@@ -231,6 +216,7 @@ $f3->route('GET|POST /@topic/discussion-create', function($f3) {
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $title = $_POST['title'];
+        $message = $_POST['message'];
 
         //1. Define the query
         $sql = 'INSERT INTO discussions (topic, title) VALUES (:topic, :title)';
@@ -248,6 +234,8 @@ $f3->route('GET|POST /@topic/discussion-create', function($f3) {
         //5. Process the result (if there is one)
         $id = $GLOBALS['dbh']->lastInsertId();
         echo "<p>Topic $id was inserted successfully</p>";
+
+        createPost($id, $message, 1);
     }
 
     // Render a view page
@@ -257,3 +245,23 @@ $f3->route('GET|POST /@topic/discussion-create', function($f3) {
 
 // Run fat free
 $f3->run();
+
+function createPost ($discussion_id, $message, $user_id) {
+    //1. Define the query
+    $sql = 'INSERT INTO posts (discussion_id, message, user_id) VALUES (:discussion_id, :message, :user_id)';
+
+    //2. Prepare the statement
+    $statement = $GLOBALS['dbh']->prepare($sql);
+
+    //3. Bind the parameters
+    $statement->bindParam(':message', $message);
+    $statement->bindParam(':discussion_id', $discussion_id);
+    $statement->bindParam(':user_id', $user_id);
+
+    //4. Execute the query
+    $statement-> execute();
+
+    //5. Process the result (if there is one)
+    $id = $GLOBALS['dbh']->lastInsertId();
+    echo "<p>Topic $id was inserted successfully</p>";
+}

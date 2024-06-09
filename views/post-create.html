@@ -1,15 +1,15 @@
 
     <h1>New Post</h1>
 
-    <form action="#" method="post" class="form-horizontal" id="post-create">
+    <form action="{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}" method="post" class="form-horizontal" id="post-create">
         <p class="description">Replying to <strong>User</strong> in <strong>Discussion</strong></p>
         <!-- get body -->
         <div class="form-group">
-            <label for="body" class="col-sm-4 control-label">Content: </label>
+            <label for="message" class="col-sm-4 control-label">Content: </label>
             <div class="col-sm-4"><textarea class="form-control"
-                                            name="body" id="body"></textarea></div>
+                                            name="message" id="message"></textarea></div>
             <br>
-            <button href="#" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Post</button>
+            <button type="submit" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Post</button>
         </div>
         <br>
     </form>
