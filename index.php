@@ -75,17 +75,12 @@ $f3->route('GET /@topic', function ($f3)
 
         $discussions[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $index = 0;
-        foreach ($result as $row) {
-            $discussions[$index] = $row['title'];
-            $index++;
-        }
 
         //Implement SQL pull of discussions
         /*$testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort',
             'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];*/
 
-        $f3->set('discussions', $discussions);
+        $f3->set('discussions', $result);
 
        $view = new Template();
        echo $view->render("views/discussion-list.html");
@@ -129,40 +124,39 @@ $f3->route('GET|POST /@topic/@discussion', function ($f3)
         //Check discussion exists
 
         //Retrieve posts with SQL
-        /*
         $sql = "SELECT users.username, posts.message, posts.created_at
         FROM posts
         INNER JOIN discussions ON posts.discussion_id = discussions.id
         INNER JOIN users ON posts.user_id = users.id
         WHERE discussions.id = :discussionID
         ORDER BY posts.created_at";
-        $statement = $dbh->prepare($sql);
+        $statement = $GLOBALS['dbh']->prepare($sql);
         $discussionID = $f3->get('PARAMS.discussion');
         $statement->bindParam(':discussionID', $discussionID, PDO::PARAM_INT);
         $statement->execute();
 
         $posts[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        echo $GLOBALS['dbh']->errorCode();
         $index = 0;
         foreach ($result as $row) {
-            $posts[$index] = new Post($row['users.username'],
-             $row['posts.created_at', $row['posts.message']
+            $posts[$index] = new Post($row['username'],
+             $row['created_at'], $row['message']
              );
             $index++;
         }
-         */
 
         //Test data
-        $testPosts[] = array();
+        /*$testPosts[] = array();
         for($i=0; $i<25; $i++) {
             $testPosts[$i] = (new Post("John$i"
                 , "12/12/1989", "I was here!")
             );
-        }
+        }*/
 
 
         //Assign posts to F3
-        $f3->set("posts", $testPosts);
+        $f3->set("posts", $posts);
 
         $view = new Template();
         echo $view->render("views/discussion.html");
