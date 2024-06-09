@@ -16,6 +16,18 @@ require_once ("classes/post.php");
 //require_once("model/data-layer.php");
 //require_once("model/validate.php");
 
+//connect to DB
+require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
+
+try {
+    // Instantiate our PDO Database Object
+    $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    echo 'Connected to database!';
+}
+catch (PDOException $e) {
+    die( $e->getMessage() );
+}
+
 $TOPICS = array(
     "General",
     array( "General Discussion", "Memes", "Q&A"),
@@ -55,8 +67,8 @@ $f3->route('GET /@topic', function ($f3)
         //Might need to make topics a global array.
 
         //Retrieve discussions with SQL
-        /*$sql = "SELECT title FROM discussions WHERE topic = :topic";
-        $statement = $dbh->prepare($sql);
+        $sql = "SELECT title FROM discussions WHERE topic = :topic";
+        $statement = $GLOBALS['dbh']->prepare($sql);
         $topic = $f3->get('PARAMS.topic');
         $statement->bindParam(':topic', $topic);
         $statement->execute();
@@ -67,13 +79,13 @@ $f3->route('GET /@topic', function ($f3)
         foreach ($result as $row) {
             $discussions[$index] = $row['topic'];
             $index++;
-        }*/
+        }
 
         //Implement SQL pull of discussions
-        $testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort',
-            'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];
+        /*$testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort',
+            'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];*/
 
-        $f3->set('discussions', $testDiscussions);
+        $f3->set('discussions', $discussions);
 
        $view = new Template();
        echo $view->render("views/discussion-list.html");
@@ -199,22 +211,11 @@ $f3->route('GET|POST /discussion-create', function() {
 
         $title = $_POST['title'];
 
-        require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
-
-        try {
-            // Instantiate our PDO Database Object
-            $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-            echo 'Connected to database!';
-        }
-        catch (PDOException $e) {
-            die( $e->getMessage() );
-        }
-
         //1. Define the query
         $sql = 'INSERT INTO discussions (topic) VALUES (:topic)';
 
         //2. Prepare the statement
-        $statement = $dbh->prepare($sql);
+        $statement = $GLOBALS['dbh']->prepare($sql);
 
         //3. Bind the parameters
         $statement->bindParam(':topic', $title);
@@ -223,7 +224,7 @@ $f3->route('GET|POST /discussion-create', function() {
         $statement-> execute();
 
         //5. Process the result (if there is one)
-        $id = $dbh->lastInsertId();
+        $id = $GLOBALS['dbh']->lastInsertId();
         echo "<p>Topic $id was inserted successfully</p>";
     }
 
