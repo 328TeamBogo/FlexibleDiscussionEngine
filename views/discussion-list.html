@@ -12,9 +12,11 @@
         <div class="container d-flex">
             <h1>{{ @PARAMS.topic }}</h1>
             <div class="ms-auto p-2">
-                <button onclick="window.location='{{ @PARAMS.topic }}/discussion-create'"
-                        class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">New Discussion
-                </button>
+                <check if="{{isset(@SESSION['userID'])}}">
+                    <button onclick="window.location='{{ @PARAMS.topic }}/discussion-create'"
+                            class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">New Discussion
+                    </button>
+                </check>
             </div>
         </div>
         <hr class="border-3">

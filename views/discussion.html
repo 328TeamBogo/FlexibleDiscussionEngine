@@ -24,7 +24,9 @@
                 <div class="col-12 d-flex mb-3 border-bottom border-2">
                     <div class="p-2">{{ @post->getUser() }}</div>
                     <div class="p-2">{{ @post->getDate() }}</div>
-                    <div class="ms-auto p-2"><button class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Quote</button></div>
+                    <check if="{{isset(@SESSION['userID'])}}">
+                        <div class="ms-auto p-2"><button class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Quote</button></div>
+                    </check>
                 </div>
                 <div class="mb-2 col-12">
                     <div>{{ @post->getMessage() }}</div>
