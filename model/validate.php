@@ -13,7 +13,18 @@ class Validate {
      * Validate password
      */
     public static function validPassword($password) {
-        // Password must be at least 6 characters long and contain only letters
-        return preg_match('/^[a-zA-Z]{6,}$/', $password);
+        // Password contains letters, numbers and special characters, at least 6 characters
+        return preg_match('/^[a-zA-Z0-9!@#$%^&*()_+]{6,}$/', $password);
+    }
+
+    /**
+     * Check if username already exists in the database
+     */
+    public static function usernameExists($username, $dbh) {
+        $sql = "SELECT COUNT(*) FROM users WHERE username = :username";
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(':username', $username);
+        $statement->execute();
+        return $statement->fetchColumn() > 0;
     }
 }
