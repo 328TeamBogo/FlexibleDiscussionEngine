@@ -4,7 +4,14 @@
         <h1>Computer Science Forum</h1>
     </div>
     <div class="">
-        <button onclick="window.location='{{@BASE}}/loginForm'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Log In</button>
+        <check if="{{isset(@SESSION['userID'])}}">
+            <true>
+                <button onclick="window.location='{{@BASE}}/logout'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Log out</button>
+            </true>
+            <false>
+                <button onclick="window.location='{{@BASE}}/loginForm'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Log In</button>
+            </false>
+        </check>
         <button onclick="window.location='{{@BASE}}/sign-up'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Sign Up</button>
     </div>
 </div>

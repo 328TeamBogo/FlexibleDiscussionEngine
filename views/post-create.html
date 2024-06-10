@@ -1,15 +1,21 @@
+<check if="{{isset(@SESSION['userID'])}}">
+    <true>
+        <h1>New Post</h1>
 
-    <h1>New Post</h1>
-
-    <form action="{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}" method="post" class="form-horizontal" id="post-create">
-        <p class="description">Replying to <strong>User</strong> in <strong>Discussion</strong></p>
-        <!-- get body -->
-        <div class="form-group">
-            <label for="message" class="col-sm-4 control-label">Content: </label>
-            <div class="col-sm-4"><textarea class="form-control"
-                                            name="message" id="message"></textarea></div>
+        <form action="{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}" method="post" class="form-horizontal" id="post-create">
+            <p class="description">Replying to <strong>User</strong> in <strong>Discussion</strong></p>
+            <!-- get body -->
+            <div class="form-group">
+                <label for="message" class="col-sm-4 control-label">Content: </label>
+                <div class="col-sm-4"><textarea class="form-control"
+                                                name="message" id="message"></textarea></div>
+                <br>
+                <button type="submit" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Post</button>
+            </div>
             <br>
-            <button type="submit" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Post</button>
-        </div>
-        <br>
-    </form>
+        </form>
+    </true>
+    <false>
+        <h1>Please log in to contribute to the discussion.</h1>
+    </false>
+</check>

@@ -163,6 +163,7 @@ $f3->route('GET|POST /loginForm', function($f3)
 
             // Store in SESSION
             if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['userID'] = $user['id'];
                 $_SESSION['username'] = $username;
                 $f3->reroute('/');
             } else {
@@ -221,9 +222,7 @@ $f3->route('GET|POST /sign-up', function($f3)
                     $statement->bindParam(':username', $username);
                     $statement->bindParam(':password', $hashedPassword);
                     try {
-                        $statement->execute();
-                        $_SESSION['username'] = $username;
-                        $f3->reroute('/');
+                        $f3->reroute('/account-created');
                     } catch (PDOException $e) {
                         $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
                     }
@@ -238,6 +237,20 @@ $f3->route('GET|POST /sign-up', function($f3)
         $view = new Template();
         echo $view->render('views/sign-up.html');
 
+    }
+);
+
+$f3->route('GET /account-created', function ()
+    {
+        $view = new Template();
+        echo $view->render('views/account-created.html');
+    }
+);
+
+$f3->route('GET /logout', function ($f3)
+    {
+        session_destroy();
+        $f3->reroute('/');
     }
 );
 
@@ -270,7 +283,7 @@ $f3->route('GET|POST /@topic/discussion-create', function($f3) {
         //5. Process the result (if there is one)
         $id = $GLOBALS['dbh']->lastInsertId();
 
-        createPost($id, $message, 1);
+        createPost($id, $message, $_SESSION['userID']);
     }
 
     // Render a view page
