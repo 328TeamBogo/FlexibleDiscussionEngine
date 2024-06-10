@@ -29,6 +29,12 @@
                 <div class="form-group">
                     <input type="password" name="password" placeholder="Password" required>
                 </div>
+                <br>
+                <check if="{{ isset(@error) }}">
+                    <div class="alert alert-danger">
+                        {{ @error }}
+                    </div>
+                </check>
                 <div class="form-group">
                     <input type="submit" value="Log In">
                 </div>
