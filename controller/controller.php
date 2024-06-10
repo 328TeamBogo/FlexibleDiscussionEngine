@@ -54,7 +54,7 @@ class Controller
 
             $message = $_POST['message'];
 
-            createPost($this->_f3->get('PARAMS.discussion'), $message, 1);
+            createPost($this->_f3->get('PARAMS.discussion'), $message, $_SESSION['userID']);
         }
 
 
@@ -237,22 +237,27 @@ class Controller
         $view = new Template();
         echo $view->render('views/discussion-create.html');
     }
-    static function createPost ($discussion_id, $message, $user_id) {
-        //1. Define the query
-        $sql = 'INSERT INTO posts (discussion_id, message, user_id) VALUES (:discussion_id, :message, :user_id)';
 
-        //2. Prepare the statement
-        $statement = $GLOBALS['dbh']->prepare($sql);
+}
+function createPost ($discussion_id, $message, $user_id) {
+    //1. Define the query
+    $sql = 'INSERT INTO posts (discussion_id, message, user_id) VALUES (:discussion_id, :message, :user_id)';
 
-        //3. Bind the parameters
-        $statement->bindParam(':message', $message);
-        $statement->bindParam(':discussion_id', $discussion_id);
-        $statement->bindParam(':user_id', $user_id);
+    //2. Prepare the statement
+    $statement = $GLOBALS['dbh']->prepare($sql);
 
-        //4. Execute the query
-        $statement-> execute();
+    //2.5 Sanitize
+    $message = preg_replace("/</", "&lt;", $message);
+    $message = preg_replace("/>/", "&gt;", $message);
 
-        //5. Process the result (if there is one)
-        $id = $GLOBALS['dbh']->lastInsertId();
-    }
+    //3. Bind the parameters
+    $statement->bindParam(':message', $message);
+    $statement->bindParam(':discussion_id', $discussion_id);
+    $statement->bindParam(':user_id', $user_id);
+
+    //4. Execute the query
+    $statement-> execute();
+
+    //5. Process the result (if there is one)
+    $id = $GLOBALS['dbh']->lastInsertId();
 }
