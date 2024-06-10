@@ -213,19 +213,22 @@ $f3->route('GET|POST /sign-up', function($f3)
             $username = $f3->get('POST.username');
             $password = $f3->get('POST.password');
 
-            if (Validate::validUsername($username) && Validate::validPassword($password))
-            {
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
-                $statement = $GLOBALS['dbh']->prepare($sql);
-                $statement->bindParam(':username', $username);
-                $statement->bindParam(':password', $hashedPassword);
-                try {
-                    $statement->execute();
-                    $_SESSION['username'] = $username;
-                    $f3->reroute('/');
-                } catch (PDOException $e) {
-                    $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
+            if (Validate::validUsername($username) && Validate::validPassword($password)) {
+                if (!Validate::usernameExists($username, $GLOBALS['dbh'])) {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
+                    $statement = $GLOBALS['dbh']->prepare($sql);
+                    $statement->bindParam(':username', $username);
+                    $statement->bindParam(':password', $hashedPassword);
+                    try {
+                        $statement->execute();
+                        $_SESSION['username'] = $username;
+                        $f3->reroute('/');
+                    } catch (PDOException $e) {
+                        $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
+                    }
+                } else {
+                    $f3->set('error', 'Username already exists');
                 }
             } else {
                 $f3->set('error', 'Invalid username or password. Username must be at least 3 letters 
