@@ -187,8 +187,27 @@ $f3->route('GET|POST /sign-up', function($f3)
     {
         if ($f3->get('VERB') == 'POST') {
             $username = $f3->get('POST.username');
-            $password = $f3->get('POST.password');
+            $password = password_hash($f3->get('POST.password'), PASSWORD_DEFAULT);
+            $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
+            $statement = $GLOBALS['dbh']->prepare($sql);
+            $statement->bindParam(':username', $username);
+            $statement->bindParam(':password', $password);
+            try {
+                $statement->execute();
+                $_SESSION['username'] = $username;
+                $f3->reroute('/');
+            } catch (PDOException $e) {
+                $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
+            }
+        } else {
+            $view = new Template();
+            echo $view->render('views/sign-up.html');
+        }
 
+        // SESSION Method for Sign Up
+        /*if ($f3->get('VERB') == 'POST') {
+            $username = $f3->get('POST.username');
+            $password = $f3->get('POST.password');
             // Store in SESSION
             if ($username && $password) {
                 $_SESSION['username'] = $username;
@@ -199,7 +218,7 @@ $f3->route('GET|POST /sign-up', function($f3)
         } else {
             $view = new Template();
             echo $view->render('views/sign-up.html');
-        }
+        }*/
     }
 );
 
