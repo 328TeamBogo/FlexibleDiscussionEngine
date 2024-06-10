@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 require_once("vendor/autoload.php");
 require_once ("classes/post.php");
 //require_once("model/data-layer.php");
-//require_once("model/validate.php");
+require_once("model/validate.php");
 
 //connect to DB
 require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
@@ -22,6 +22,8 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
 try {
     // Instantiate our PDO Database Object
     $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    // Set the PDO error mode to exception
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch (PDOException $e) {
     die( $e->getMessage() );
@@ -149,8 +151,30 @@ $f3->route('GET|POST /@topic/@discussion', function ($f3)
 // Login Form Route
 $f3->route('GET|POST /loginForm', function($f3)
     {
-
         if ($f3->get('VERB') == 'POST') {
+            $username = $f3->get('POST.username');
+            $password = $f3->get('POST.password');
+
+            $sql = 'SELECT * FROM users WHERE username = :username';
+            $statement = $GLOBALS['dbh']->prepare($sql);
+            $statement->bindParam(':username', $username);
+            $statement->execute();
+            $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+            // Store in SESSION
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['username'] = $username;
+                $f3->reroute('/');
+            } else {
+                $f3->set('error', 'Invalid login');
+            }
+        }
+        $view = new Template();
+        echo $view->render('views/loginForm.html');
+        ///////////////////////////////////////////////////////////////////////////////
+
+        // few typos and above is fixed code - Reshad
+/*        if ($f3->get('VERB') == 'POST') {
             $username = $f3->get('POST.username');
             $password = $f3->get('POST.password');
 
@@ -178,7 +202,7 @@ $f3->route('GET|POST /loginForm', function($f3)
         } else {
             $view = new Template();
             echo $view->render('views/loginForm.html');
-        }
+        }*/
     }
 );
 
@@ -187,38 +211,30 @@ $f3->route('GET|POST /sign-up', function($f3)
     {
         if ($f3->get('VERB') == 'POST') {
             $username = $f3->get('POST.username');
-            $password = password_hash($f3->get('POST.password'), PASSWORD_DEFAULT);
-            $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
-            $statement = $GLOBALS['dbh']->prepare($sql);
-            $statement->bindParam(':username', $username);
-            $statement->bindParam(':password', $password);
-            try {
-                $statement->execute();
-                $_SESSION['username'] = $username;
-                $f3->reroute('/');
-            } catch (PDOException $e) {
-                $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
-            }
-        } else {
-            $view = new Template();
-            echo $view->render('views/sign-up.html');
-        }
-
-        // SESSION Method for Sign Up
-        /*if ($f3->get('VERB') == 'POST') {
-            $username = $f3->get('POST.username');
             $password = $f3->get('POST.password');
-            // Store in SESSION
-            if ($username && $password) {
-                $_SESSION['username'] = $username;
-                $f3->reroute('/');
+
+            if (Validate::validUsername($username) && Validate::validPassword($password))
+            {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
+                $statement = $GLOBALS['dbh']->prepare($sql);
+                $statement->bindParam(':username', $username);
+                $statement->bindParam(':password', $hashedPassword);
+                try {
+                    $statement->execute();
+                    $_SESSION['username'] = $username;
+                    $f3->reroute('/');
+                } catch (PDOException $e) {
+                    $f3->set('error', 'Sign-up failed: ' . $e->getMessage());
+                }
             } else {
-                $f3->set('error', 'Sign-up failed');
+                $f3->set('error', 'Invalid username or password. Username must be at least 3 letters 
+                                    and password must be at least 6 letters.');
             }
-        } else {
-            $view = new Template();
-            echo $view->render('views/sign-up.html');
-        }*/
+        }
+        $view = new Template();
+        echo $view->render('views/sign-up.html');
+
     }
 );
 
