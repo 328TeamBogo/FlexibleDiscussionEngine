@@ -108,6 +108,10 @@ class Controller
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
 
+            // Sanitize username
+            $username = preg_replace("/</", "&lt;", $username);
+            $username = preg_replace("/>/", "&gt;", $username);
+
             $sql = 'SELECT * FROM users WHERE username = :username';
             $statement = $GLOBALS['dbh']->prepare($sql);
             $statement->bindParam(':username', $username);
@@ -165,15 +169,21 @@ class Controller
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
 
+            // Sanitize username
+            $username = preg_replace("/</", "&lt;", $username);
+            $username = preg_replace("/>/", "&gt;", $username);
+
             if (Validate::validUsername($username) && Validate::validPassword($password)) {
                 if (!Validate::usernameExists($username, $GLOBALS['dbh'])) {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
                     $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
                     $statement = $GLOBALS['dbh']->prepare($sql);
                     $statement->bindParam(':username', $username);
                     $statement->bindParam(':password', $hashedPassword);
                     try {
                         $statement->execute();
+                        $_SESSION['userID'] = $GLOBALS['dbh']->lastInsertId();
                         $this->_f3->reroute('/account-created');
                     } catch (PDOException $e) {
                         $this->_f3->set('error', 'Sign-up failed: ' . $e->getMessage());
@@ -183,7 +193,8 @@ class Controller
                 }
             } else {
                 $this->_f3->set('error', 'Invalid username or password. Username must be at least 3 letters 
-                                    and password must be at least 6 letters.');
+                                    and password must be at least 6 characters (letters, numbers, 
+                                    and special characters).');
             }
         }
         $view = new Template();
