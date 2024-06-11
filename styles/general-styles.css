@@ -31,3 +31,45 @@ a:hover {
 {
     background-image: url("../images/VimBG.png");
 }
+
+/* Dark Mode Styles */
+body.dark-mode, .container.dark-mode, .form-group.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+input[type="submit"].dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+hr.dark-mode {
+    color: #444444;
+}
+
+a.dark-mode {
+    color: #ffffff;
+}
+
+.alert.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.navbar.dark-mode {
+    background-color: #333333;
+}
+
+.btn.dark-mode {
+    background-color: #444444;
+    color: #ffffff;
+}
+
+.card.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+h2.dark-mode {
+    color: #ffffff;
+}
