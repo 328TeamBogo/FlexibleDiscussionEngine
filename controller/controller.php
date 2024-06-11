@@ -183,7 +183,6 @@ class Controller
                     $statement->bindParam(':password', $hashedPassword);
                     try {
                         $statement->execute();
-                        $_SESSION['userID'] = $GLOBALS['dbh']->lastInsertId();
                         $this->_f3->reroute('/account-created');
                     } catch (PDOException $e) {
                         $this->_f3->set('error', 'Sign-up failed: ' . $e->getMessage());
