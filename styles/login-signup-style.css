@@ -47,3 +47,26 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #a30000;
 }
+
+/* Dark Mode Styles */
+body.dark-mode .login-container,
+body.dark-mode .signup-container {
+    background: rgba(18, 18, 18, 0.8);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="password"] {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+body.dark-mode input[type="submit"] {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode input[type="submit"]:hover {
+    background-color: #1e1f22;
+}
