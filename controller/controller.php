@@ -54,7 +54,7 @@ class Controller
 
             $message = $_POST['message'];
 
-            createPost($this->_f3->get('PARAMS.discussion'), $message, $_SESSION['userID']);
+            $_SESSION['user']->createPost($this->_f3->get('PARAMS.discussion'), $message);
         }
 
 
@@ -65,11 +65,11 @@ class Controller
         //Check discussion exists
 
         //Retrieve posts with SQL
-        $sql = "SELECT users.username, posts.message, posts.created_at
+        $sql = "SELECT posts.id, users.username, posts.user_id, posts.message, posts.created_at
         FROM posts
         INNER JOIN discussions ON posts.discussion_id = discussions.id
         INNER JOIN users ON posts.user_id = users.id
-        WHERE discussions.id = :discussionID
+        WHERE discussions.id = :discussionID AND posts.status = 1
         ORDER BY posts.created_at";
         $statement = $GLOBALS['dbh']->prepare($sql);
         $discussionID = $this->_f3->get('PARAMS.discussion');
@@ -80,8 +80,8 @@ class Controller
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $index = 0;
         foreach ($result as $row) {
-            $posts[$index] = new Post($row['username'],
-                $row['created_at'], $row['message']
+            $posts[$index] = new Post($row['id'], $row['username'],
+                $row['user_id'], $row['created_at'], $row['message']
             );
             $index++;
         }
@@ -108,10 +108,6 @@ class Controller
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
 
-            // Sanitize username
-            $username = preg_replace("/</", "&lt;", $username);
-            $username = preg_replace("/>/", "&gt;", $username);
-
             $sql = 'SELECT * FROM users WHERE username = :username';
             $statement = $GLOBALS['dbh']->prepare($sql);
             $statement->bindParam(':username', $username);
@@ -119,9 +115,9 @@ class Controller
             $user = $statement->fetch(PDO::FETCH_ASSOC);
 
             // Store in SESSION
-            if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['userID'] = $user['id'];
-                $_SESSION['username'] = $username;
+            if ($user && password_verify($password, $user['password']))
+            {
+                $_SESSION['user'] = new User($user['username'], $user['id'], $user['status']);
                 $this->_f3->reroute('/');
             } else {
                 $this->_f3->set('error', 'Invalid login');
@@ -169,15 +165,10 @@ class Controller
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
 
-            // Sanitize username
-            $username = preg_replace("/</", "&lt;", $username);
-            $username = preg_replace("/>/", "&gt;", $username);
-
             if (Validate::validUsername($username) && Validate::validPassword($password)) {
                 if (!Validate::usernameExists($username, $GLOBALS['dbh'])) {
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                    $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
+                    $sql = 'INSERT INTO users (username, password, email) VALUES (:username, :password, "placeholder@noemail.com")';
                     $statement = $GLOBALS['dbh']->prepare($sql);
                     $statement->bindParam(':username', $username);
                     $statement->bindParam(':password', $hashedPassword);
@@ -192,8 +183,7 @@ class Controller
                 }
             } else {
                 $this->_f3->set('error', 'Invalid username or password. Username must be at least 3 letters 
-                                    and password must be at least 6 characters (letters, numbers, 
-                                    and special characters).');
+                                    and password must be at least 6 letters.');
             }
         }
         $view = new Template();
@@ -214,11 +204,6 @@ class Controller
 
     function createDiscussion()
     {
-        //echo '<h1>Testing!</h1>';
-
-        // Initialize variables
-        $title = "";
-
         // If the form has been posted
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -241,7 +226,7 @@ class Controller
             //5. Process the result (if there is one)
             $id = $GLOBALS['dbh']->lastInsertId();
 
-            createPost($id, $message, $_SESSION['userID']);
+            $_SESSION['user']->createPost($id, $message);
         }
 
         // Render a view page
@@ -249,26 +234,19 @@ class Controller
         echo $view->render('views/discussion-create.html');
     }
 
-}
-function createPost ($discussion_id, $message, $user_id) {
-    //1. Define the query
-    $sql = 'INSERT INTO posts (discussion_id, message, user_id) VALUES (:discussion_id, :message, :user_id)';
-
-    //2. Prepare the statement
-    $statement = $GLOBALS['dbh']->prepare($sql);
-
-    //2.5 Sanitize
-    $message = preg_replace("/</", "&lt;", $message);
-    $message = preg_replace("/>/", "&gt;", $message);
-
-    //3. Bind the parameters
-    $statement->bindParam(':message', $message);
-    $statement->bindParam(':discussion_id', $discussion_id);
-    $statement->bindParam(':user_id', $user_id);
-
-    //4. Execute the query
-    $statement-> execute();
-
-    //5. Process the result (if there is one)
-    $id = $GLOBALS['dbh']->lastInsertId();
+    function postDeletion()
+    {
+        if(isset($_SESSION['user']))
+        {
+            $_SESSION['user']->deletePost($this->_f3->get('PARAMS.post'));
+            $this->_f3->reroute(
+                $this->_f3->get('PARAMS.topic').'/'.
+                $this->_f3->get('PARAMS.discussion')
+            );
+        }
+        else
+        {
+            $this->_f3->reroute('/');
+        }
+    }
 }

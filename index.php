@@ -1,4 +1,7 @@
 <?php
+require_once ("classes/post.php");
+require_once ("classes/user.php");
+require_once ("classes/admin.php");
 session_start();
 /* Team BOGO
  * 11May2024
@@ -12,7 +15,6 @@ error_reporting(E_ALL);
 
 // Require the autoloader
 require_once("vendor/autoload.php");
-require_once ("classes/post.php");
 require_once ("controller/controller.php");
 //require_once("model/data-layer.php");
 require_once("model/validate.php");
@@ -56,28 +58,34 @@ $f3->route('GET /', function()
 );
 
 // Dynamic addressing for chosen topic's discussion list.
-$f3->route('GET /@topic', function ($f3)
+$f3->route('GET /@topic', function ()
     {
         $GLOBALS['controller']->discussionsInTopic();
     }
 );
 
 //  Dynamic addressing for chosen discussion.
-$f3->route('GET|POST /@topic/@discussion', function ($f3)
+$f3->route('GET|POST /@topic/@discussion', function ()
     {
         $GLOBALS['controller']->postsInDiscussion();
     }
 );
 
+$f3->route('GET /@topic/@discussion/delete/@post', function ()
+    {
+        $GLOBALS['controller']->postDeletion();
+    }
+);
+
 // Login Form Route
-$f3->route('GET|POST /loginForm', function($f3)
+$f3->route('GET|POST /loginForm', function()
     {
        $GLOBALS['controller']->loginForm();
     }
 );
 
 // Sign Up Form Route
-$f3->route('GET|POST /sign-up', function($f3)
+$f3->route('GET|POST /sign-up', function()
     {
         $GLOBALS['controller']->signupForm();
     }
@@ -89,18 +97,19 @@ $f3->route('GET /account-created', function ()
     }
 );
 
-$f3->route('GET /logout', function ($f3)
+$f3->route('GET /logout', function ()
     {
         $GLOBALS['controller']->logOut();
     }
 );
 
 // Define a discussion-create route
-$f3->route('GET|POST /@topic/discussion-create', function($f3)
+$f3->route('GET|POST /@topic/discussion-create', function()
     {
         $GLOBALS['controller']->createDiscussion();
     }
 );
+
 
 // Run fat free
 $f3->run();

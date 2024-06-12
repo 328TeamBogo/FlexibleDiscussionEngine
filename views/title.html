@@ -4,7 +4,7 @@
         <h1>Computer Science Forum</h1>
     </div>
     <div class="">
-        <check if="{{isset(@SESSION['userID'])}}">
+        <check if="{{isset(@SESSION['user'])}}">
             <true>
                 <button onclick="window.location='{{@BASE}}/logout'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Log out</button>
             </true>
@@ -13,6 +13,5 @@
             </false>
         </check>
         <button onclick="window.location='{{@BASE}}/sign-up'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Sign Up</button>
-        <button id="darkModeToggle" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle ms-2">Toggle Dark Mode</button>
     </div>
 </div>

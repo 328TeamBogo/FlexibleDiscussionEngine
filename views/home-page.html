@@ -10,9 +10,9 @@
     <include href="views/nav.html"></include>
     <include href="views/search.html"></include>
     <div class="row justify-content-center mt-5">
-        <check if="{{isset(@SESSION['username'])}}">
+        <check if="{{isset(@SESSION['user'])}}">
             <div class="alert">
-                Welcome, {{@SESSION['username']}}!
+                Welcome, {{@SESSION['user']->getUsername()}}!
             </div>
         </check>
         <h2 class="extra-padding"><strong>Forums</strong></h2>
