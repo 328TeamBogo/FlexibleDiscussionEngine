@@ -12,29 +12,38 @@
     <div class="col-12 d-flex">
         <h1>{{ @PARAMS.topic }}</h1>
         <check if="{{isset(@SESSION['user'])}}">
-            <div class="ms-auto p-2">
-                <button onclick="window.location.href='#post-create'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Reply</button>
-            </div>
+            <check if="{{@SESSION['user']->getPermission() == 2}}">
+                <div class="ms-auto p-2">
+                    <button onclick="window.location.href='{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}/close'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Close Discussion</button>
+                </div>
+            </check>
+            <check if="@activeDiscussion == 1">
+                <div class="ms-auto p-2">
+                    <button onclick="window.location.href='#post-create'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Reply</button>
+                </div>
+            </check>
         </check>
     </div>
     <hr class="border-3">
     <ul>
-        <repeat group="@posts" value="@post">
-            <div class="mb-3 container row shadow rounded">
-                <div class="col-12 d-flex mb-3 border-bottom border-2">
-                    <div class="p-2">{{ @post->getUsername() }}</div>
-                    <div class="p-2">{{ @post->getDate() }}</div>
-                    <check if="{{isset(@SESSION['user'])}}">
-                        <check if="{{@post->getUserID() == @SESSION['user']->getUserID() || @SESSION['user']->getPermission() == 2}}">
-                            <div class="ms-auto p-2"><button onclick="window.location.href='{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}/delete/{{@post->getPostID()}}'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Delete</button></div>
+        <check if="{{isset(@posts)}}">
+            <repeat group="@posts" value="@post">
+                <div class="mb-3 container row shadow rounded">
+                    <div class="col-12 d-flex mb-3 border-bottom border-2">
+                        <div class="p-2">{{ @post->getUsername() }}</div>
+                        <div class="p-2">{{ @post->getDate() }}</div>
+                        <check if="{{isset(@SESSION['user'])}}">
+                            <check if="{{@post->getUserID() == @SESSION['user']->getUserID() || @SESSION['user']->getPermission() == 2}}">
+                                <div class="ms-auto p-2"><button onclick="window.location.href='{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}/delete/{{@post->getPostID()}}'" class="btn btn-secondary pt-0 pb-0 border-2 border-success-subtle">Delete</button></div>
+                            </check>
                         </check>
-                    </check>
+                    </div>
+                    <div class="mb-2 col-12">
+                        <div>{{ @post->getMessage() }}</div>
+                    </div>
                 </div>
-                <div class="mb-2 col-12">
-                    <div>{{ @post->getMessage() }}</div>
-                </div>
-            </div>
-        </repeat>
+            </repeat>
+        </check>
     </ul>
     <include href="views/post-create.html"></include>
 </div>

@@ -65,7 +65,8 @@ class Controller
         //Check discussion exists
 
         //Retrieve posts with SQL
-        $sql = "SELECT posts.id, users.username, posts.user_id, posts.message, posts.created_at
+        $sql = "SELECT posts.id, users.username, posts.user_id, posts.message, 
+       posts.created_at, discussions.status
         FROM posts
         INNER JOIN discussions ON posts.discussion_id = discussions.id
         INNER JOIN users ON posts.user_id = users.id
@@ -79,13 +80,14 @@ class Controller
         $posts[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $index = 0;
+        $active = true;
         foreach ($result as $row) {
             $posts[$index] = new Post($row['id'], $row['username'],
                 $row['user_id'], $row['created_at'], $row['message']
             );
+            $active = $row['status']; //would like to pull out of loop
             $index++;
         }
-
         //Test data
         /*$testPosts[] = array();
         for($i=0; $i<25; $i++) {
@@ -94,9 +96,9 @@ class Controller
             );
         }*/
 
-
         //Assign posts to F3
         $this->_f3->set("posts", $posts);
+        $this->_f3->set("activeDiscussion", $active);
 
         $view = new Template();
         echo $view->render("views/discussion.html");
@@ -117,7 +119,14 @@ class Controller
             // Store in SESSION
             if ($user && password_verify($password, $user['password']))
             {
-                $_SESSION['user'] = new User($user['username'], $user['id'], $user['status']);
+                if($user['status'] == 2)
+                {
+                    $_SESSION['user'] = new Admin($user['username'], $user['id'], $user['status']);
+                }
+                else
+                {
+                    $_SESSION['user'] = new User($user['username'], $user['id'], $user['status']);
+                }
                 $this->_f3->reroute('/');
             } else {
                 $this->_f3->set('error', 'Invalid login');
@@ -248,5 +257,23 @@ class Controller
         {
             $this->_f3->reroute('/');
         }
+    }
+
+    function closeDiscussion()
+    {
+        if(isset($_SESSION['user']))
+        {
+            if($_SESSION['user'] instanceof Admin)
+            {
+                $_SESSION['user']->archiveDiscussion($this->_f3->get('PARAMS.discussion'));
+                $this->_f3->reroute(
+                    $this->_f3->get('PARAMS.topic').'/'.
+                    $this->_f3->get('PARAMS.discussion')
+                );
+            }
+        }
+        $result = ($_SESSION['user'] instanceof Admin);
+        var_dump($result);
+        //$this->_f3->reroute('/');
     }
 }

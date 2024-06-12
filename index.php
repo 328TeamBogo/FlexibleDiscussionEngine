@@ -77,6 +77,12 @@ $f3->route('GET /@topic/@discussion/delete/@post', function ()
     }
 );
 
+$f3->route('GET /@topic/@discussion/close', function ()
+    {
+        $GLOBALS['controller']->closeDiscussion();
+    }
+);
+
 // Login Form Route
 $f3->route('GET|POST /loginForm', function()
     {
