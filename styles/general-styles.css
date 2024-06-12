@@ -85,3 +85,7 @@ body.dark-mode .card {
 body.dark-mode h2 {
     color: #fff;
 }
+
+#darkModeToggle {
+    margin-left: 693px;
+}
