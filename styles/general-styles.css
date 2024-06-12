@@ -34,7 +34,7 @@ a:hover {
 
 /* Dark Mode Styles */
 body.dark-mode {
-    background-color: #121212;
+    background-color: #1e1f22;
     color: #e0e0e0;
 }
 
@@ -47,12 +47,12 @@ body.dark-mode a:hover {
 }
 
 body.dark-mode .container {
-    background: rgba(18, 18, 18, 0.8);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    background: rgb(43, 45, 48);
+    box-shadow: 0 4px 8px rgb(43, 45, 48);
 }
 
 body.dark-mode input[type="submit"] {
-    background-color: #bb86fc;
+    background-color: #65bb70;
     color: #121212;
 }
 
