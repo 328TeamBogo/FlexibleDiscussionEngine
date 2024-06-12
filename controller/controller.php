@@ -236,6 +236,10 @@ class Controller
             $id = $GLOBALS['dbh']->lastInsertId();
 
             $_SESSION['user']->createPost($id, $message);
+
+            $this->_f3->reroute(
+                $this->_f3->get('PARAMS.topic')
+            );
         }
 
         // Render a view page
