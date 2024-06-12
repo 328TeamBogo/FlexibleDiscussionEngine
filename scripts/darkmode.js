@@ -48,14 +48,17 @@ document.addEventListener("DOMContentLoaded", function() {
     // Check and apply
     if (localStorage.getItem("darkMode") === "enabled") {
         applyDarkMode();
+        toggleButton.textContent = "Dark Mode Off";
     }
 
     // Toggle dark mode on button
     toggleButton.addEventListener("click", function() {
         if (document.body.classList.contains("dark-mode")) {
             removeDarkMode();
+            toggleButton.textContent = "Dark Mode On";
         } else {
             applyDarkMode();
+            toggleButton.textContent = "Dark Mode Off";
         }
     });
 });
