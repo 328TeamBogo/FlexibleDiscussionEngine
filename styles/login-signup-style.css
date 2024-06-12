@@ -63,10 +63,15 @@ body.dark-mode input[type="password"] {
 }
 
 body.dark-mode input[type="submit"] {
-    background-color: #bb86fc;
+    background-color: #2c872b;
     color: #121212;
 }
 
 body.dark-mode input[type="submit"]:hover {
-    background-color: #1e1f22;
+    background-color: #1e6414;
+}
+
+body.dark-mode .alert-danger {
+    color: #f7f7f7;
+    background-color: #fd004c;
 }
