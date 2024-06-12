@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('.btn').forEach(button => button.classList.add('dark-mode'));
         document.querySelectorAll('.card').forEach(card => card.classList.add('dark-mode'));
         document.querySelectorAll('h2').forEach(h2 => h2.classList.add('dark-mode'));
+        document.querySelectorAll('.bg-light').forEach(element => element.classList.add('dark-mode'));
         localStorage.setItem("darkMode", "enabled");
     }
 
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('.btn').forEach(button => button.classList.remove('dark-mode'));
         document.querySelectorAll('.card').forEach(card => card.classList.remove('dark-mode'));
         document.querySelectorAll('h2').forEach(h2 => h2.classList.remove('dark-mode'));
+        document.querySelectorAll('.bg-light').forEach(element => element.classList.remove('dark-mode'));
         localStorage.setItem("darkMode", "disabled");
     }
 
