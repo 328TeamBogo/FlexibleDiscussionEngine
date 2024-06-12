@@ -52,7 +52,7 @@ body.dark-mode .container {
 }
 
 body.dark-mode input[type="submit"] {
-    background-color: #65bb70;
+    background-color: #2b2d30;
     color: #121212;
 }
 
@@ -84,4 +84,17 @@ body.dark-mode .card {
 
 body.dark-mode h2 {
     color: #fff;
+}
+
+body.dark-mode .bg-light {
+    background-color: #1e1f22 !important;
+    color: #e0e0e0;
+}
+
+body.dark-mode .bg-light .nav-link {
+    color: #e0e0e0;
+}
+
+body.dark-mode .bg-light .nav-link:hover {
+    color: #bb86fc;
 }
