@@ -18,10 +18,7 @@ Discussion Forum web design for SDEV 328 Project.
 - All routing is handled by index.php by calling function in the Controller
 
 **3. Has a clearly defined database layer using PDO and prepared statements.**
-- Not yet
-
-
-
+- All SQL has been extracted to data layer or handled in classes
 
 **4. Data can be added and viewed.**
 - Yes, discussions and posts can both be made by a signed-in user
@@ -35,9 +32,7 @@ Discussion Forum web design for SDEV 328 Project.
 - Admin class inherits from User and adds the ability to archive discussions
 
 **7. Contains full Docblocks for all PHP files and follows PEAR standards.**
-- Not yet
-
-
+- All PHP files have documentation explaining their functions
 
 **8. Has full validation on the server side through PHP.**
 - All input fields have validation or sanitization
