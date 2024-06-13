@@ -94,6 +94,7 @@ function retrievePostData($f3, $discussionID)
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     $index = 0;
     $discussionTitle = "";
+    $firstUser = "";
     $active = true;
     foreach ($result as $row) {
         $posts[$index] = new Post($row['id'], $row['username'],
@@ -101,6 +102,7 @@ function retrievePostData($f3, $discussionID)
         );
         $active = $row['status']; //would like to pull out of loop
         $discussionTitle = $row['title'];
+        $firstUser = $row['username'];
         $index++;
     }
     //Test data
@@ -115,6 +117,7 @@ function retrievePostData($f3, $discussionID)
     $f3->set("posts", $posts);
     $f3->set("activeDiscussion", $active);
     $f3->set("discussionTitle", $discussionTitle);
+    $f3->set("firstUser", $firstUser);
 }
 
 /**
