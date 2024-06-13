@@ -2,7 +2,8 @@
     <true>
         <check if="{{isset(@SESSION['user'])}}">
             <true>
-                <h1>New Post</h1>
+                <br>
+                <h3>New Post</h3>
 
                 <form action="{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}" method="post" class="form-horizontal" id="post-create">
                     <p class="description">Replying to <strong>{{ @firstUser }}</strong> in <strong>{{@PARAMS.topic}} - {{ @discussionTitle }}</strong></p>
