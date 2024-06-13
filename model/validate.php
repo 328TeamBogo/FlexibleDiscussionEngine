@@ -4,7 +4,8 @@ class Validate {
     /**
      * Validate username
      */
-    public static function validUsername($username) {
+    public static function validUsername($username)
+    {
         // Username must be at least 3 characters long and contain only letters
         return preg_match('/^[a-zA-Z]{3,}$/', $username);
     }
@@ -20,7 +21,8 @@ class Validate {
     /**
      * Check if username already exists in the database
      */
-    public static function usernameExists($username, $dbh) {
+    public static function usernameExists($username, $dbh)
+    {
         $sql = "SELECT COUNT(*) FROM users WHERE username = :username";
         $statement = $dbh->prepare($sql);
         $statement->bindParam(':username', $username);
