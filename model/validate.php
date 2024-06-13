@@ -13,7 +13,8 @@ class Validate {
     /**
      * Validate password
      */
-    public static function validPassword($password) {
+    public static function validPassword($password)
+    {
         // Password contains letters, numbers and special characters, at least 6 characters
         return preg_match('/^[a-zA-Z0-9!@#$%^&*()_+]{6,}$/', $password);
     }
