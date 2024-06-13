@@ -30,6 +30,10 @@
                     <input type="password" name="password" placeholder="Password" required>
                 </div>
                 <br>
+                <div class="form-group text-muted mb-3">
+                    <p class="mb-1">Username must be at least 3 letters (no numbers, special characters).</p>
+                    <p>Password must be at least 6 characters (can contain numbers, special characters).</p>
+                </div>
                 <check if="{{ isset(@error) }}">
                     <div class="alert alert-danger">
                         {{ @error }}
