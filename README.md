@@ -49,3 +49,9 @@ Discussion Forum web design for SDEV 328 Project.
 **10. Your submission is professional and shows adequate effort for a final project in a full-stack web development course.**
 - In addition to fulfilling all requirements, we took on a challenging project involving dynamic routing
 - This quarter we were able to take full advantage of Fat-Free's features to create a website we otherwise would not have been able to
+
+## UML Class Diagram
+![Alt text](images/UML_Diagram.png)
+## Forum Database Diagram
+![Alt text](images/Forum_database_Diagram.png)
+## GitHub Commit breakdown
