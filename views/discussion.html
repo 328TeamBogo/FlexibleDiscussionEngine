@@ -11,9 +11,9 @@
     <br>
     <div class="col-12 row d-flex">
         <div class="col-12">
-            <h1>{{ @PARAMS.topic }}</h1>
+            <button onclick="window.location.href='{{@BASE}}/{{@PARAMS.topic}}'" type="button" class="btn">< {{ @PARAMS.topic }}</button>
+            <h1>{{ @discussionTitle }}</h1>
         </div>
-        <h2>{{ @discussionTitle }}</h2>
         <check if="{{isset(@SESSION['user'])}}">
             <check if="{{@SESSION['user']->getPermission() == 2}}">
                 <div class="ms-auto p-2">

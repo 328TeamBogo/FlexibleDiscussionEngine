@@ -82,12 +82,16 @@ class Controller
         $index = 0;
         $discussionTitle = "";
         $active = true;
+        $firstUser = "";
         foreach ($result as $row) {
             $posts[$index] = new Post($row['id'], $row['username'],
                 $row['user_id'], $row['created_at'], $row['message']
             );
-            $active = $row['status']; //would like to pull out of loop
-            $discussionTitle = $row['title'];
+            if ($index == 0) {
+                $discussionTitle = $row['title'];
+                $active = $row['status'];
+                $firstUser = $row['username'];
+            }
             $index++;
         }
         //Test data
@@ -102,6 +106,7 @@ class Controller
         $this->_f3->set("posts", $posts);
         $this->_f3->set("activeDiscussion", $active);
         $this->_f3->set("discussionTitle", $discussionTitle);
+        $this->_f3->set("firstUser", $firstUser);
 
         $view = new Template();
         echo $view->render("views/discussion.html");

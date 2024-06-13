@@ -5,7 +5,7 @@
                 <h1>New Post</h1>
 
                 <form action="{{@BASE}}/{{@PARAMS.topic}}/{{@PARAMS.discussion}}" method="post" class="form-horizontal" id="post-create">
-                    <p class="description">Replying to discussion in <strong>{{@PARAMS.topic}}</strong></p>
+                    <p class="description">Replying to <strong>{{ @firstUser }}</strong> in <strong>{{@PARAMS.topic}} - {{ @discussionTitle }}</strong></p>
                     <!-- get body -->
                     <div class="form-group">
                         <label for="message" class="col-sm-4 control-label">Content: </label>
