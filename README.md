@@ -50,3 +50,4 @@ Discussion Forum web design for SDEV 328 Project.
 ## Forum Database Diagram
 ![Alt text](images/Forum_database_Diagram.png)
 ## GitHub Commit breakdown
+![Alt text](images/GitHub_commits.png)
