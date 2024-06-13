@@ -146,7 +146,7 @@ class Controller
             $title = $_POST['title'];
             $message = $_POST['message'];
 
-            $id = buildDiscussionData($title, $this->_f3->get('PARAMS.topic'));
+            $id = createDiscussionData($title, $this->_f3->get('PARAMS.topic'));
 
             $_SESSION['user']->createPost($id, $message);
 

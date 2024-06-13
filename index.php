@@ -2,6 +2,10 @@
 require_once ("classes/post.php");
 require_once ("classes/user.php");
 require_once ("classes/admin.php");
+require_once("vendor/autoload.php");
+require_once ("controller/controller.php");
+require_once("model/data-layer.php");
+require_once("model/validate.php");
 session_start();
 /* Team BOGO
  * 11May2024
@@ -14,10 +18,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Require the autoloader
-require_once("vendor/autoload.php");
-require_once ("controller/controller.php");
-require_once("model/data-layer.php");
-require_once("model/validate.php");
+
 
 //connect to DB
 require_once $_SERVER['DOCUMENT_ROOT'].'/../config.php';
