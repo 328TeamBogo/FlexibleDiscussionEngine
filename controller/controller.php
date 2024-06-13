@@ -1,14 +1,25 @@
 <?php
 
+/**
+ * The class which controls all the site's navigation
+ */
 class Controller
 {
     private $_f3;
 
+    /**
+     * Simple constructor
+     *
+     * @param $f3
+     */
     function __construct($f3)
     {
         $this->_f3 = $f3;
     }
 
+    /**
+     * Navigation for the homepage
+     */
     function home()
     {
         //Render view page.
@@ -16,6 +27,9 @@ class Controller
         echo $view->render("views/home-page.html");
     }
 
+    /**
+     * Navigation for the all discussions under a given topic.
+     */
     function discussionsInTopic()
     {
         //to access topic $f3->get('PARAMS.topic');
@@ -23,20 +37,10 @@ class Controller
 
         //Check topic exists
         //Might need to make topics a global array.
-
-        //Retrieve discussions with SQL
-        $sql = "SELECT * FROM discussions WHERE topic = :topic";
-        $statement = $GLOBALS['dbh']->prepare($sql);
         $topic = $this->_f3->get('PARAMS.topic');
-        $statement->bindParam(':topic', $topic);
-        $statement->execute();
+        //Retrieve discussions with SQL
+        $result = retrieveDiscussionData($topic);
 
-        $discussions[] = array();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        //Implement SQL pull of discussions
-        /*$testDiscussions = ['Radix Sort', 'Merge Sort', 'Bogosort',
-            'Bubble Sort', 'Quicksort', 'Heapsort', 'Timsort'];*/
 
         $this->_f3->set('discussions', $result);
 
@@ -44,6 +48,9 @@ class Controller
         echo $view->render("views/discussion-list.html");
     }
 
+    /**
+     * Navigation for all posts under a given discussion
+     */
     function postsInDiscussion()
     {
         // Initialize variables
@@ -57,82 +64,28 @@ class Controller
             $_SESSION['user']->createPost($this->_f3->get('PARAMS.discussion'), $message);
         }
 
-
-        //to access topic $f3->get('PARAMS.topic');
-        //to access discussion $f3->get('PARAMS.discussion');
-        //use to access list of posts.
-
-        //Check discussion exists
-
-        //Retrieve posts with SQL
-        $sql = "SELECT posts.id, users.username, posts.user_id, posts.message, 
-       posts.created_at, discussions.status, discussions.title
-        FROM posts
-        INNER JOIN discussions ON posts.discussion_id = discussions.id
-        INNER JOIN users ON posts.user_id = users.id
-        WHERE discussions.id = :discussionID AND posts.status = 1
-        ORDER BY posts.created_at";
-        $statement = $GLOBALS['dbh']->prepare($sql);
         $discussionID = $this->_f3->get('PARAMS.discussion');
-        $statement->bindParam(':discussionID', $discussionID, PDO::PARAM_INT);
-        $statement->execute();
-
-        $posts[] = array();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $index = 0;
-        $discussionTitle = "";
-        $active = true;
-        $firstUser = "";
-        foreach ($result as $row) {
-            $posts[$index] = new Post($row['id'], $row['username'],
-                $row['user_id'], $row['created_at'], $row['message']
-            );
-            if ($index == 0) {
-                $discussionTitle = $row['title'];
-                $active = $row['status'];
-                $firstUser = $row['username'];
-            }
-            $index++;
-        }
-        //Test data
-        /*$testPosts[] = array();
-        for($i=0; $i<25; $i++) {
-            $testPosts[$i] = (new Post("John$i"
-                , "12/12/1989", "I was here!")
-            );
-        }*/
-
-        //Assign posts to F3
-        $this->_f3->set("posts", $posts);
-        $this->_f3->set("activeDiscussion", $active);
-        $this->_f3->set("discussionTitle", $discussionTitle);
-        $this->_f3->set("firstUser", $firstUser);
+        retrievePostData($this->_f3, $discussionID);
 
         $view = new Template();
         echo $view->render("views/discussion.html");
     }
 
+    /**
+     * Navigation for the login form.
+     */
     function loginForm()
     {
         if ($this->_f3->get('VERB') == 'POST') {
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
-
-            $sql = 'SELECT * FROM users WHERE username = :username';
-            $statement = $GLOBALS['dbh']->prepare($sql);
-            $statement->bindParam(':username', $username);
-            $statement->execute();
-            $user = $statement->fetch(PDO::FETCH_ASSOC);
-
+            $user = getUserData($username);
             // Store in SESSION
-            if ($user && password_verify($password, $user['password']))
-            {
-                if($user['status'] == 2)
-                {
+            if ($user && password_verify($password, $user['password'])) {
+                if($user['status'] == 2) {
                     $_SESSION['user'] = new Admin($user['username'], $user['id'], $user['status']);
                 }
-                else
-                {
+                else {
                     $_SESSION['user'] = new User($user['username'], $user['id'], $user['status']);
                 }
                 $this->_f3->reroute('/');
@@ -142,83 +95,49 @@ class Controller
         }
         $view = new Template();
         echo $view->render('views/loginForm.html');
-        ///////////////////////////////////////////////////////////////////////////////
-
-        // few typos and above is fixed code - Reshad
-        /*        if ($f3->get('VERB') == 'POST') {
-                    $username = $f3->get('POST.username');
-                    $password = $f3->get('POST.password');
-
-        //            $sql = 'SELECT password FROM users WHERE username = :username';
-        //            $statement = $GLOBALS['dbh']->prepare($sql);
-        //            $statement->bindParam(':username', $username);
-        //            $statement->execute();
-        //            $hash = $statement->fetchAll(PDO::FETCH_ASSOC); //might be wrong fetch
-        //
-        //            // Store in SESSION
-        //            if (password_verify($password, $hash['password'])) {
-        //                $_SESSION['username'] = $username;
-        //                $f3->reroute('/');
-        //            } else {
-        //                $f3->set('error', 'Invalid login');
-        //            }
-
-                    // Store in SESSION
-                    if ($username && $password) {
-                        $_SESSION['username'] = $username;
-                        $f3->reroute('/');
-                    } else {
-                        $f3->set('error', 'Invalid login');
-                    }
-                } else {
-                    $view = new Template();
-                    echo $view->render('views/loginForm.html');
-                }*/
     }
 
+    /**
+     * Navigation for the signup form.
+     */
     function signupForm()
     {
         if ($this->_f3->get('VERB') == 'POST') {
             $username = $this->_f3->get('POST.username');
             $password = $this->_f3->get('POST.password');
-
-            if (Validate::validUsername($username) && Validate::validPassword($password)) {
-                if (!Validate::usernameExists($username, $GLOBALS['dbh'])) {
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    $sql = 'INSERT INTO users (username, password, email) VALUES (:username, :password, "placeholder@noemail.com")';
-                    $statement = $GLOBALS['dbh']->prepare($sql);
-                    $statement->bindParam(':username', $username);
-                    $statement->bindParam(':password', $hashedPassword);
-                    try {
-                        $statement->execute();
-                        $this->_f3->reroute('/account-created');
-                    } catch (PDOException $e) {
-                        $this->_f3->set('error', 'Sign-up failed: ' . $e->getMessage());
-                    }
-                } else {
-                    $this->_f3->set('error', 'Username already exists');
-                }
-            } else {
-                $this->_f3->set('error', 'Invalid username or password. Username must be at least 3 letters 
-                                    and password must be at least 6 letters.');
+            $error = createUserData($username, $password);
+            if($error == '') {
+                $this->_f3->reroute('/account-created');
+            }
+            else {
+                $this->_f3->set('error', $error);
             }
         }
         $view = new Template();
         echo $view->render('views/sign-up.html');
     }
 
+    /**
+     * Navigation for account creation
+     */
     function accountCreated()
     {
         $view = new Template();
         echo $view->render('views/account-created.html');
     }
 
+    /**
+     * Function to handle logging out a user.
+     */
     function logOut()
     {
         session_destroy();
         $this->_f3->reroute('/');
     }
 
+    /**
+     * Function for discussion creation.
+     */
     function createDiscussion()
     {
         // If the form has been posted
@@ -227,21 +146,7 @@ class Controller
             $title = $_POST['title'];
             $message = $_POST['message'];
 
-            //1. Define the query
-            $sql = 'INSERT INTO discussions (topic, title) VALUES (:topic, :title)';
-
-            //2. Prepare the statement
-            $statement = $GLOBALS['dbh']->prepare($sql);
-
-            //3. Bind the parameters
-            $statement->bindParam(':title', $title);
-            $statement->bindParam(':topic', $this->_f3->get('PARAMS.topic'));
-
-            //4. Execute the query
-            $statement-> execute();
-
-            //5. Process the result (if there is one)
-            $id = $GLOBALS['dbh']->lastInsertId();
+            $id = buildDiscussionData($title, $this->_f3->get('PARAMS.topic'));
 
             $_SESSION['user']->createPost($id, $message);
 
@@ -255,6 +160,9 @@ class Controller
         echo $view->render('views/discussion-create.html');
     }
 
+    /**
+     * Function for post deletion.
+     */
     function postDeletion()
     {
         if(isset($_SESSION['user']))
@@ -271,6 +179,9 @@ class Controller
         }
     }
 
+    /**
+     * Function for closing a discussion
+     */
     function closeDiscussion()
     {
         if(isset($_SESSION['user']))
@@ -284,8 +195,6 @@ class Controller
                 );
             }
         }
-        $result = ($_SESSION['user'] instanceof Admin);
-        var_dump($result);
-        //$this->_f3->reroute('/');
+        $this->_f3->reroute('/');
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Post class handles the storage and retrieval of all information about a
+ * post.
+ */
 class Post
 {
     private $_postID;
@@ -9,6 +13,8 @@ class Post
     private $_message;
 
     /**
+     * Basic constructor for a post
+     *
      * @param $_postID
      * @param $_username
      * @param $_userID
@@ -25,7 +31,7 @@ class Post
     }
 
     /**
-     * @return mixed
+     * Simple getter for post ID
      */
     public function getPostID()
     {
@@ -33,7 +39,7 @@ class Post
     }
 
     /**
-     * @return mixed
+     * Simple getter for post's user's name
      */
     public function getUsername()
     {
@@ -42,7 +48,7 @@ class Post
 
 
     /**
-     * @return mixed
+     * Simple getter for post's user's ID
      */
     public function getUserID()
     {
@@ -50,7 +56,7 @@ class Post
     }
 
     /**
-     * @return mixed
+     * Simple getter for date and time of the post
      */
     public function getDate()
     {
@@ -58,7 +64,7 @@ class Post
     }
 
     /**
-     * @return mixed
+     * Simple getter for body of the post
      */
     public function getMessage()
     {

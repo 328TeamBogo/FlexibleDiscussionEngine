@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * User class handles all information which must be known about a user as well
+ * as handling multiple actions a user can perform.
+ */
 class User
 {
     private $_username;

@@ -16,7 +16,7 @@ error_reporting(E_ALL);
 // Require the autoloader
 require_once("vendor/autoload.php");
 require_once ("controller/controller.php");
-//require_once("model/data-layer.php");
+require_once("model/data-layer.php");
 require_once("model/validate.php");
 
 //connect to DB
