@@ -9,8 +9,11 @@
     <include href="views/nav.html"></include>
     <include href="views/search.html"></include>
     <br>
-    <div class="col-12 d-flex">
-        <h1>{{ @PARAMS.topic }}</h1>
+    <div class="col-12 row d-flex">
+        <div class="col-12">
+            <h1>{{ @PARAMS.topic }}</h1>
+        </div>
+        <h2>{{ @discussionTitle }}</h2>
         <check if="{{isset(@SESSION['user'])}}">
             <check if="{{@SESSION['user']->getPermission() == 2}}">
                 <div class="ms-auto p-2">

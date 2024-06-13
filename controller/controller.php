@@ -66,7 +66,7 @@ class Controller
 
         //Retrieve posts with SQL
         $sql = "SELECT posts.id, users.username, posts.user_id, posts.message, 
-       posts.created_at, discussions.status
+       posts.created_at, discussions.status, discussions.title
         FROM posts
         INNER JOIN discussions ON posts.discussion_id = discussions.id
         INNER JOIN users ON posts.user_id = users.id
@@ -80,12 +80,14 @@ class Controller
         $posts[] = array();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $index = 0;
+        $discussionTitle = "";
         $active = true;
         foreach ($result as $row) {
             $posts[$index] = new Post($row['id'], $row['username'],
                 $row['user_id'], $row['created_at'], $row['message']
             );
             $active = $row['status']; //would like to pull out of loop
+            $discussionTitle = $row['title'];
             $index++;
         }
         //Test data
@@ -99,6 +101,7 @@ class Controller
         //Assign posts to F3
         $this->_f3->set("posts", $posts);
         $this->_f3->set("activeDiscussion", $active);
+        $this->_f3->set("discussionTitle", $discussionTitle);
 
         $view = new Template();
         echo $view->render("views/discussion.html");
