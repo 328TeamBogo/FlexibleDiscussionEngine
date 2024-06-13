@@ -49,8 +49,7 @@ function createUserData($username, $password)
             return 'Username already exists';
         }
     } else {
-        return 'Invalid username or password. Username must be at least 3 letters 
-                                    and password must be at least 6 letters.';
+        return 'Invalid username or password.';
     }
     return '';
 }
